@@ -59,6 +59,38 @@
 
 <script>
 
+  // check if the key pressed has an audio associated and play it
+  function playSound(event) {
+    const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${event.keyCode}"]`);
+    // if no audio corresponding to key pressed, stop.
+    if(!audio) return;
+
+    // rewind audio and play
+    audio.currentTime = 0;
+    audio.play();
+
+    // add playing class
+    key.classList.add('playing');
+  }
+
+  // removes the transition effect when a key is pressed, after its transition
+  // ends
+  function removeTransition(event) {
+    // we only care for transform transitions
+    if (event.propertyName !== 'transform') return;
+
+    // remove the playing class
+    console.log(this);
+    this.classList.remove('playing');
+  }
+
+  // add a listener for transitionend event for each key of the drum kit
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  // call playSound when a key is pressed down
+  window.addEventListener('keydown', playSound);
 </script>
 
 
